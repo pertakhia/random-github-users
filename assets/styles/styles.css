@@ -146,7 +146,7 @@ h1 {
 
 @media (max-width: 400px) {
   .game-board {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .card {
