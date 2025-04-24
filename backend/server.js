@@ -25,6 +25,8 @@ const client = new MongoClient(process.env.MONGO_URI, {
     deprecationErrors: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    ssl: true,
+    tlsAllowInvalidCertificates: false,
   }
 });
 
