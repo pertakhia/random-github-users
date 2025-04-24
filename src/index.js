@@ -215,8 +215,9 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("totalVisits").textContent = data.totalVisits;
     })
   ).subscribe();
+  window.addEventListener("beforeunload", () => {
+    navigator.sendBeacon(`${backendUrl}/leave`, {}); // Send a beacon to the server when the user leaves");
+  });
 });
 
-window.addEventListener("beforeunload", () => {
-  navigator.sendBeacon(`${backendUrl}/leave`, {}); // Send a beacon to the server when the user leaves");
-});
+
