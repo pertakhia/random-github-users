@@ -1,7 +1,8 @@
 import "../assets/styles/styles.css";
 import { from, of } from "rxjs";
 import { lastValueFrom } from "rxjs";
-import { switchMap, catchError, timeout, map } from "rxjs/operators";
+import { switchMap, interval, tap, startWith, catchError, timeout, map } from "rxjs";
+import { fromFetch } from 'rxjs/fetch';
 
 document.addEventListener("DOMContentLoaded", () => {
   const gameBoard = document.getElementById("gameBoard");
@@ -27,24 +28,37 @@ document.addEventListener("DOMContentLoaded", () => {
     clearInterval(timerInterval);
     const finalTime = ((Date.now() - startTime) / 1000).toFixed(2);
     updateBestTime(finalTime);
+    updateLocalBestTime(finalTime); // Update local best time
   }
 
   // Update the best time in local storage
-  function updateBestTime(currentTime) {
-    const best = localStorage.getItem("bestTime");
-    if (!best || parseFloat(currentTime) < parseFloat(best)) {
-      localStorage.setItem("bestTime", currentTime);
+  async function updateBestTime(currentTime) {
+    const res = await fetch("http://localhost:3001/best-time");
+    const data = await res.json();
+
+    if (!data.time || parseFloat(currentTime) < parseFloat(data.time)) {
+      await fetch("http://localhost:3001/best-time", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ time: parseFloat(currentTime) }),
+      });
       document.getElementById("bestTime").textContent = currentTime + "s";
     }
   }
 
+
+
   // Load the best time from local storage
-  function loadBestTime() {
-    const best = localStorage.getItem("bestTime");
-    if (best) {
-      document.getElementById("bestTime").textContent = best + "s";
+  async function loadBestTimeFromServer() {
+    const res = await fetch("http://localhost:3001/best-time");
+    const data = await res.json();
+    if (data.time) {
+      document.getElementById("bestTime").textContent = data.time + "s";
     }
   }
+
+
+
 
   // Fetch random images from the Picsum API
   function fetchUsers(count = 6) {
@@ -67,6 +81,23 @@ document.addEventListener("DOMContentLoaded", () => {
         return of([]);
       })
     );
+  }
+
+  // Update local best time if it's better
+  function updateLocalBestTime(currentTime) {
+    const localBest = localStorage.getItem("yourBestTime");
+    if (!localBest || parseFloat(currentTime) < parseFloat(localBest)) {
+      localStorage.setItem("yourBestTime", currentTime);
+      document.getElementById("yourBestTime").textContent = currentTime + "s";
+    }
+  }
+
+  // Load your personal best time from localStorage
+  function loadLocalBestTime() {
+    const time = localStorage.getItem("yourBestTime");
+    if (time) {
+      document.getElementById("yourBestTime").textContent = time + "s";
+    }
   }
 
   // Shuffle the array
@@ -146,7 +177,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Start the game by fetching images and displaying the cards
   async function startGame() {
     showLoader();
-    loadBestTime();
+    loadBestTimeFromServer();
+    loadLocalBestTime(); // Load local best time
     try {
       const images = await lastValueFrom(fetchUsers(6)); // Fetch 6 random images
       const cards = shuffle(images); // Shuffle the images
@@ -161,4 +193,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize the game
   startGame();
+
+  // იზავდებს ვიზიტორს როგორც კი შემოვა
+  fromFetch("http://localhost:3001/enter", { method: 'POST' }).subscribe();
+
+  // წაიკითხავს სტატისტიკას ყოველ 2 წამში
+  interval(2000).pipe(
+    startWith(0), // trigger immediately on load
+    switchMap(() =>
+      fromFetch("http://localhost:3001/stats").pipe(
+        switchMap(response => response.json()),
+        catchError(err => {
+          console.error('Failed to load stats:', err);
+          return of({ onlineUsers: 0, totalVisits: 0 });
+        })
+      )
+    ),
+    tap(data => {
+      document.getElementById("onlineUsers").textContent = data.onlineUsers;
+      document.getElementById("totalVisits").textContent = data.totalVisits;
+    })
+  ).subscribe();
+});
+
+window.addEventListener("beforeunload", () => {
+  navigator.sendBeacon("http://localhost:3001/leave");
 });

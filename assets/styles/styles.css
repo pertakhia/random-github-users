@@ -14,12 +14,84 @@ body {
   height: 100vh;
   margin: 0;
 }
+#timer {
+  background-color: #ffffff;
+  color: #e91e63;
+  font-size: 2.5rem;
+  font-weight: bold;
+  padding: 15px 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  text-align: center;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  transition: background-color 0.3s ease;
+}
+
+#timer:hover {
+  background-color: #fce4ec;
+}
+.container-best-time {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px; /* გაჭიმვა მათ შორის */
+  margin: 10px 0;
+  flex-wrap: wrap; /* მობილურებზე გაყოფა */
+  width: 100%;
+}
+
+.time-box {
+  flex: 1; /* იწევს რომ დაიკავოს ყველა ადგილი */
+  text-align: center;
+  padding: 10px 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-size: 1em;
+  color: #333;
+}
+
+.time-box span {
+  font-weight: bold;
+  color: #007bff;
+}
+
+
 
 .container {
   text-align: center;
   width: 90%;
   max-width: 800px;
   margin: 0 auto;
+}
+
+
+.stats-container {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 30px 40px;
+  text-align: center;
+  width: 320px;
+}
+
+.stats-container h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.stat {
+  font-size: 20px;
+  margin: 10px 0;
+  color: #555;
+}
+
+.stat span {
+  font-weight: bold;
+  color: #007bff;
 }
 
 .header {
@@ -60,17 +132,30 @@ h1 {
 
 .game-board {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-gap: 20px;
   justify-items: center;
-  margin-top: 20px;
+  align-items: center;
+  margin-top: 30px;
+  padding: 20px;
+  max-width: 800px;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
+
 .card {
   width: 100px;
   height: 150px;
   perspective: 1000px;
   cursor: pointer;
   position: relative;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.05);
 }
 
 .card .front,
@@ -79,23 +164,24 @@ h1 {
   height: 100%;
   position: absolute;
   backface-visibility: hidden;
-  border-radius: 8px;
+  border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 2rem;
-  transition: transform 0.5s;
+  transition: transform 0.5s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .card .front {
-  background-color: #2c3e50;
+  background-color: #1e293b; /* Tailwind dark blue */
   color: white;
   transform: rotateY(0deg);
   z-index: 2;
 }
 
 .card .back {
-  background-color: #ecf0f1;
+  background-color: #e2e8f0; /* Tailwind gray-200 */
   transform: rotateY(180deg);
 }
 
@@ -112,17 +198,34 @@ h1 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 12px;
 }
 
 #restartBtn {
   border: none;
   background-color: #4caf50;
   color: white;
-  padding: 10px 20px;
+  padding: 12px 24px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 12px;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+#restartBtn:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.5);
+}
+
+#restartBtn:active {
+  transform: scale(0.98);
+  box-shadow: 0 3px 8px rgba(76, 175, 80, 0.4);
 }
 
 @media (max-width: 600px) {
@@ -144,9 +247,43 @@ h1 {
   }
 }
 
-@media (max-width: 400px) {
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* ელემენტები დაეწყობა ერთმანეთს */
+  }
+
+  .container {
+    width: 100%;
+    padding: 0 10px;
+    overflow: hidden;
+  }
+
+  .stats-container {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 10px;
+  }
+
+  /* სტატისტიკის ზომების შემცირება */
+  .stat,
+  .stats-container h1,
+  .time-info,
+  #timer {
+    font-size: 1em;
+    margin: 5px 0;
+  }
+
+  /* თამაშის კარტების რედიზაინი */
   .game-board {
     grid-template-columns: repeat(3, 1fr);
+    grid-gap: 8px;
+    margin-top: 10px;
   }
 
   .card {
@@ -154,11 +291,39 @@ h1 {
     height: 90px;
   }
 
-  .restart-btn {
+  /* Restart Button ვერსიის ცვლილება */
+  .restart-btn,
+  #restartBtn {
     font-size: 0.9em;
+    padding: 8px 16px;
+    margin-top: 10px;
   }
 
-  .time-info {
+  .time-info,
+  #timer,
+  #yourBestTime,
+  #bestTime {
+    font-size: 0.9em;
+    margin: 5px 0;
+  }
+
+  .stat {
+    font-size: 0.95em;
+  }
+
+  /* Restart button მხოლოდ გაწერეთ ქვემოთ */
+  #restartBtn {
+    width: 100%; /* სრული სიგანე */
+    padding: 12px;
+    font-size: 1.1em; /* ცოტა უფრო დიდი */
+  }
+
+
+  .time-box {
+    margin-bottom: 10px;
+    width: 100%; /* სრულ სიგანეში */
+    padding: 8px 10px;
     font-size: 0.9em;
   }
 }
+

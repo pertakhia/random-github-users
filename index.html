@@ -1,17 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Memory Card Game</title>
-  </head>
-  <body>
-    <div class="container">
-      <div id="loader" class="loader">Loading...</div>
-      <div id="gameBoard" class="game-board"></div>
-      <div id="timer">0.00</div>
-      <div>Best Time: <span id="bestTime">N/A</span></div>
-      <button id="restartBtn">Restart Game</button>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory Card Game</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="stats-container">
+      <h1>Game Stats</h1>
+      <div class="stat">🔴 Online Users: <span id="onlineUsers">0</span></div>
+      <div class="stat">🧠 Total Visits: <span id="totalVisits">0</span></div>
     </div>
-  </body>
+    <div id="loader" class="loader">Loading...</div>
+    <div id="gameBoard" class="game-board"></div>
+    <div id="timer">0.00</div>
+    <div class="container-best-time">
+      <div class="time-box">Your Best Time: <span id="yourBestTime">N/A</span></div>
+      <div class="time-box">Best Time: <span id="bestTime">N/A</span></div>
+    </div>
+    <button id="restartBtn">Restart Game</button>
+  </div>
+</body>
+
 </html>
