@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const fs = require('fs');
 const path = require('path');
 
-dotenv.config({ debug: true });
+require('dotenv').config();
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
 const app = express();
