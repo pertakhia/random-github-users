@@ -7,6 +7,7 @@ import { fromFetch } from 'rxjs/fetch';
 document.addEventListener("DOMContentLoaded", () => {
   const gameBoard = document.getElementById("gameBoard");
   const container = document.querySelector(".container");
+  let backendUrl ="https://memory-card-ag0o.onrender.com"
 
   let flippedCards = [];
   let startTime, timerInterval;
@@ -33,11 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Update the best time in local storage
   async function updateBestTime(currentTime) {
-    const res = await fetch("http://localhost:3001/best-time");
+    const res = await fetch(`${backendUrl}/best-time`);
     const data = await res.json();
 
     if (!data.time || parseFloat(currentTime) < parseFloat(data.time)) {
-      await fetch("http://localhost:3001/best-time", {
+      await fetch(`${backendUrl}/best-time`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ time: parseFloat(currentTime) }),
@@ -50,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Load the best time from local storage
   async function loadBestTimeFromServer() {
-    const res = await fetch("http://localhost:3001/best-time");
+    const res = await fetch(`${backendUrl}/best-time`);
     const data = await res.json();
     if (data.time) {
       document.getElementById("bestTime").textContent = data.time + "s";
@@ -195,13 +196,13 @@ document.addEventListener("DOMContentLoaded", () => {
   startGame();
 
   // იზავდებს ვიზიტორს როგორც კი შემოვა
-  fromFetch("http://localhost:3001/enter", { method: 'POST' }).subscribe();
+  fromFetch(`${backendUrl}/enter`, { method: 'POST' }).subscribe();
 
   // წაიკითხავს სტატისტიკას ყოველ 2 წამში
   interval(2000).pipe(
     startWith(0), // trigger immediately on load
     switchMap(() =>
-      fromFetch("http://localhost:3001/stats").pipe(
+      fromFetch(`${backendUrl}/stats`).pipe(
         switchMap(response => response.json()),
         catchError(err => {
           console.error('Failed to load stats:', err);
@@ -217,5 +218,5 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 window.addEventListener("beforeunload", () => {
-  navigator.sendBeacon("http://localhost:3001/leave");
+  navigator.sendBeacon(`${backendUrl}/leave`, {}); // Send a beacon to the server when the user leaves");
 });
