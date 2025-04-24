@@ -8,7 +8,7 @@
     "build": "npm install && webpack --mode production ",
     "build:dev:start": "webpack --mode development && webpack serve --mode development --open",
     "build:dev": "webpack --mode development",
-    "server:start:backend": "node backend/server.js",
+    "server:start:backend": "cd backend && npm install && node server.js",
     "webpack:start": "webpack --mode development && webpack serve --mode development --open",
     "start:all": "concurrently \"npm run server:start:backend\" \"npm run webpack:start\""
   },
