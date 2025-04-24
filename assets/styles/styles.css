@@ -14,6 +14,7 @@ body {
   height: 100vh;
   margin: 0;
 }
+
 #timer {
   background-color: #ffffff;
   color: #e91e63;
@@ -33,17 +34,21 @@ body {
 #timer:hover {
   background-color: #fce4ec;
 }
+
 .container-best-time {
   display: flex;
   justify-content: space-between;
-  gap: 10px; /* გაჭიმვა მათ შორის */
+  gap: 10px;
+  /* გაჭიმვა მათ შორის */
   margin: 10px 0;
-  flex-wrap: wrap; /* მობილურებზე გაყოფა */
+  flex-wrap: wrap;
+  /* მობილურებზე გაყოფა */
   width: 100%;
 }
 
 .time-box {
-  flex: 1; /* იწევს რომ დაიკავოს ყველა ადგილი */
+  flex: 1;
+  /* იწევს რომ დაიკავოს ყველა ადგილი */
   text-align: center;
   padding: 10px 15px;
   background-color: #fff;
@@ -174,14 +179,16 @@ h1 {
 }
 
 .card .front {
-  background-color: #1e293b; /* Tailwind dark blue */
+  background-color: #1e293b;
+  /* Tailwind dark blue */
   color: white;
   transform: rotateY(0deg);
   z-index: 2;
 }
 
 .card .back {
-  background-color: #e2e8f0; /* Tailwind gray-200 */
+  background-color: #e2e8f0;
+  /* Tailwind gray-200 */
   transform: rotateY(180deg);
 }
 
@@ -251,11 +258,12 @@ h1 {
 @media (max-width: 480px) {
   body {
     padding: 10px;
-    height: 100vh;
-    overflow: hidden;
+    height: 100%;
+    overflow: auto;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* ელემენტები დაეწყობა ერთმანეთს */
+    justify-content: space-between;
+    /* ელემენტები დაეწყობა ერთმანეთს */
   }
 
   .container {
@@ -313,17 +321,19 @@ h1 {
 
   /* Restart button მხოლოდ გაწერეთ ქვემოთ */
   #restartBtn {
-    width: 100%; /* სრული სიგანე */
+    width: 100%;
+    /* სრული სიგანე */
     padding: 12px;
-    font-size: 1.1em; /* ცოტა უფრო დიდი */
+    font-size: 1.1em;
+    /* ცოტა უფრო დიდი */
   }
 
 
   .time-box {
     margin-bottom: 10px;
-    width: 100%; /* სრულ სიგანეში */
+    width: 100%;
+    /* სრულ სიგანეში */
     padding: 8px 10px;
     font-size: 0.9em;
   }
 }
-
