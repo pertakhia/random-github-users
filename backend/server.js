@@ -106,6 +106,11 @@ app.get('/stats', (req, res) => {
   res.json({ totalVisits, onlineUsers });
 });
 
+app.get("/", (req, res) => {
+    res.send("Hello World!");
+    }   
+);
+
 app.listen(3001, () => {
   console.log('Server running on http://localhost:3001');
 });
